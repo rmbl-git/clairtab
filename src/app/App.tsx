@@ -10,17 +10,13 @@ import {
   buildGoogleSearchUrl,
   generateId,
 } from '../domain/validators'
-import {
-  getBackgroundImageUrl,
-  getBackgroundColor,
-  getBackgroundOverlay,
-} from '../features/background/background-provider'
 import { SettingsPanel } from '../features/settings/SettingsPanel'
 import { SearchPanel } from '../features/search/SearchPanel'
 import { TaskPanel } from '../features/tasks/TaskPanel'
 import { ShortcutGrid } from '../features/shortcuts/ShortcutGrid'
 import { AmbientHeader } from '../features/ambient/AmbientHeader'
 import { ModeSwitcher } from '../features/modeswitcher/ModeSwitcher'
+import { useBackground } from '../features/background/use-background'
 import '../styles/shell.css'
 
 export default function App() {
@@ -206,9 +202,15 @@ export default function App() {
   }
 
   const { preferences, tasks, shortcuts } = state
-  const bgImageUrl = getBackgroundImageUrl(preferences.theme)
-  const bgColor = getBackgroundColor(preferences.theme)
-  const bgOverlay = getBackgroundOverlay(preferences.theme, preferences.veilIntensity)
+  const bg = useBackground(preferences)
+  const bgImageUrl = bg.cache?.imageUrl ?? ''
+  const bgColor = bg.cache?.color ?? '#1a2a3a'
+  const bgOverlay =
+    preferences.veilIntensity === 'light'
+      ? bgColor + '66'
+      : preferences.veilIntensity === 'strong'
+        ? bgColor + 'CC'
+        : bgColor + '99'
   const { showSearchModule, showFocusModule } = preferences
   const activeModule = preferences.primaryMode
 
@@ -251,7 +253,10 @@ export default function App() {
   }
 
   return (
-    <div className={`claritab-shell${preferences.reduceMotion === true ? ' claritab-reduced-motion' : ''}`} style={{ '--bg-image': `url(${bgImageUrl})`, '--bg-color': bgColor, '--bg-overlay': bgOverlay } as React.CSSProperties}>
+    <div
+      className={`claritab-shell${preferences.reduceMotion === true ? ' claritab-reduced-motion' : ''}`}
+      style={{ '--bg-image': `url(${bgImageUrl})`, '--bg-color': bgColor, '--bg-overlay': bgOverlay } as React.CSSProperties}
+    >
       <div className="claritab-background" aria-hidden="true" />
       <main className="claritab-main">
         <button
@@ -268,6 +273,10 @@ export default function App() {
             onChange={updatePreferences}
             onReset={resetData}
             onClose={() => setSettingsOpen(false)}
+            backgroundLoading={bg.loading}
+            backgroundError={bg.error}
+            onRefreshBackground={() => bg.refresh(true)}
+            attribution={bg.attribution}
           />
         )}
         <div className="claritab-content">
@@ -284,6 +293,18 @@ export default function App() {
         </div>
         <footer className="claritab-footer">
           <p>{brand.name}</p>
+          {bg.attribution && (
+            <p className="claritab-attribution">
+              Photo par{' '}
+              <a href={bg.attribution.photographerUrl} target="_blank" rel="noopener noreferrer">
+                {bg.attribution.photographer}
+              </a>{' '}
+              sur{' '}
+              <a href={bg.attribution.providerUrl} target="_blank" rel="noopener noreferrer">
+                {bg.attribution.provider}
+              </a>
+            </p>
+          )}
         </footer>
       </main>
     </div>

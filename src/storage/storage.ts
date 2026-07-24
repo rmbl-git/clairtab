@@ -15,10 +15,12 @@ function createDefaultState(): AppState {
       showCompletedTasks: true,
       showSearchModule: true,
       showFocusModule: true,
+      localBackgroundsOnly: false,
     },
     tasks: [],
     shortcuts: [],
     backgroundCache: null,
+    backgroundBatch: null,
     onboardingCompleted: false,
   }
 }
@@ -98,6 +100,7 @@ function mergeWithDefaults(stored: AppState): AppState {
     tasks: stored.tasks ?? defaults.tasks,
     shortcuts: stored.shortcuts ?? defaults.shortcuts,
     backgroundCache: stored.backgroundCache ?? defaults.backgroundCache,
+    backgroundBatch: stored.backgroundBatch ?? defaults.backgroundBatch,
     onboardingCompleted: stored.onboardingCompleted ?? defaults.onboardingCompleted,
   }
 }

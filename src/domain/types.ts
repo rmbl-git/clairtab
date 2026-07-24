@@ -9,6 +9,7 @@ export interface Preferences {
   showCompletedTasks: boolean
   showSearchModule: boolean
   showFocusModule: boolean
+  localBackgroundsOnly: boolean
 }
 
 export interface Task {
@@ -27,6 +28,25 @@ export interface Shortcut {
   updatedAt: string
 }
 
+export interface BackgroundImage {
+  photoId: string
+  imageUrl: string
+  alt: string
+  color: string
+  photographer: string
+  photographerUrl: string
+  provider: string
+  providerUrl: string
+}
+
+export interface BackgroundBatch {
+  theme: ThemeId
+  images: BackgroundImage[]
+  fetchedAt: string
+  expiresAt: string
+  lastDisplayedPhotoId: string | null
+}
+
 export interface BackgroundCache {
   theme: ThemeId
   imageUrl: string
@@ -42,6 +62,7 @@ export interface AppState {
   tasks: Task[]
   shortcuts: Shortcut[]
   backgroundCache: BackgroundCache | null
+  backgroundBatch: BackgroundBatch | null
   onboardingCompleted: boolean
 }
 

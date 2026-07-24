@@ -6,9 +6,18 @@ interface Props {
   onChange: (Prefs: Partial<Preferences>) => void
   onReset: () => void
   onClose: () => void
+  backgroundLoading?: boolean
+  backgroundError?: string | null
+  onRefreshBackground?: () => void
+  attribution?: {
+    photographer: string
+    photographerUrl: string
+    provider: string
+    providerUrl: string
+  } | null
 }
 
-export function SettingsPanel({ preferences, onChange, onReset, onClose }: Props) {
+export function SettingsPanel({ preferences, onChange, onReset, onClose, backgroundLoading, backgroundError, onRefreshBackground, attribution }: Props) {
   const [error, setError] = useState<string | null>(null)
 
   const handleDisableBothModules = () => {
@@ -174,6 +183,45 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose }: Props
           />
           Afficher les tâches terminées
         </label>
+      </fieldset>
+
+      <fieldset className="claritab-settings-group">
+        <legend>Fond</legend>
+        <label>
+          <input
+            type="checkbox"
+            checked={preferences.localBackgroundsOnly}
+            onChange={(e) => onChange({ localBackgroundsOnly: e.target.checked })}
+          />
+          Fonds locaux uniquement
+        </label>
+        {onRefreshBackground && (
+          <button
+            type="button"
+            className="claritab-settings-refresh"
+            onClick={onRefreshBackground}
+            disabled={backgroundLoading}
+          >
+            {backgroundLoading ? 'Chargement...' : 'Changer l\'image'}
+          </button>
+        )}
+        {backgroundError && (
+          <p className="claritab-settings-background-error" role="alert">
+            {backgroundError}
+          </p>
+        )}
+        {attribution && (
+          <p className="claritab-settings-attribution">
+            Photo par{' '}
+            <a href={attribution.photographerUrl} target="_blank" rel="noopener noreferrer">
+              {attribution.photographer}
+            </a>{' '}
+            sur{' '}
+            <a href={attribution.providerUrl} target="_blank" rel="noopener noreferrer">
+              {attribution.provider}
+            </a>
+          </p>
+        )}
       </fieldset>
 
       <div className="claritab-settings-actions">

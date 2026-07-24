@@ -654,6 +654,55 @@
   margin-top: 1rem;
 }
 
+.claritab-settings-refresh {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.claritab-settings-refresh:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.claritab-settings-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.claritab-settings-background-error {
+  font-size: 0.75rem;
+  color: rgba(255, 180, 180, 0.9);
+  margin-top: 0.5rem;
+}
+
+.claritab-settings-attribution {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+}
+
+.claritab-settings-attribution a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+}
+
+.claritab-attribution {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.5rem;
+}
+
+.claritab-attribution a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+}
+
 .claritab-ambient {
   text-align: center;
   margin-bottom: 1rem;

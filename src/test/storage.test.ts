@@ -221,6 +221,7 @@ describe('module visibility', () => {
       showCompletedTasks: true,
       showSearchModule: true,
       showFocusModule: false,
+      localBackgroundsOnly: false,
     }
     expect(prefs.showSearchModule).toBe(true)
     expect(prefs.showFocusModule).toBe(false)
@@ -236,6 +237,7 @@ describe('module visibility', () => {
       showCompletedTasks: true,
       showSearchModule: true,
       showFocusModule: true,
+      localBackgroundsOnly: false,
     }
     expect(prefs.showSearchModule || prefs.showFocusModule).toBeTruthy()
   })
