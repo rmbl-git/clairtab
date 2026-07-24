@@ -158,3 +158,4 @@ Démontrer la proposition de valeur dans un nouvel onglet réel : afficher un fo
 
 Conserver le shell bootstrap. Revenir au commit de la tâche 001 et supprimer la version de schéma locale uniquement dans le profil de test, jamais dans un profil utilisateur réel.
 
+

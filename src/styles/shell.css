@@ -19,8 +19,6 @@
   position: absolute;
   inset: 0;
   background: var(--bg-overlay, rgba(0, 0, 0, 0.35));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   z-index: 0;
 }
 
@@ -379,7 +377,7 @@
 .claritab-shortcut-label {
   font-size: 0.65rem;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   text-align: center;
   max-width: 100%;
   margin-top: 8px;
@@ -469,7 +467,7 @@
   font-size: 0.65rem;
   line-height: 1.2;
   text-align: center;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   margin-top: 8px;
   max-width: 100%;
   display: -webkit-box;
@@ -534,7 +532,7 @@
 
 .claritab-shortcut-form-cancel {
   background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
 }
 
 .claritab-settings {
@@ -567,7 +565,7 @@
   right: 0.75rem;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   font-size: 1.25rem;
   cursor: pointer;
 }
@@ -589,7 +587,7 @@
 
 .claritab-settings-group legend {
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
@@ -683,7 +681,7 @@
 
 .claritab-settings-attribution {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   margin-top: 0.5rem;
 }
 
@@ -694,7 +692,7 @@
 
 .claritab-attribution {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   margin-top: 0.5rem;
 }
 
@@ -776,7 +774,7 @@
   right: 0.75rem;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   font-size: 1.25rem;
   cursor: pointer;
   width: 32px;

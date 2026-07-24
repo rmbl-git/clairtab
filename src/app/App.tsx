@@ -24,6 +24,21 @@ export default function App() {
   const [loaded, setLoaded] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
+  const defaultPreferences: Preferences = {
+    primaryMode: 'focus',
+    theme: 'landscapes',
+    showQuote: true,
+    veilIntensity: 'medium',
+    reduceMotion: false,
+    showCompletedTasks: true,
+    showSearchModule: true,
+    showFocusModule: true,
+    localBackgroundsOnly: false,
+  }
+
+  const preferences = state?.preferences ?? defaultPreferences
+  const bg = useBackground(preferences)
+
   useEffect(() => {
     loadState().then((s) => {
       setState(s)
@@ -201,8 +216,7 @@ export default function App() {
     )
   }
 
-  const { preferences, tasks, shortcuts } = state
-  const bg = useBackground(preferences)
+  const { tasks, shortcuts } = state
   const bgImageUrl = bg.cache?.imageUrl ?? ''
   const bgColor = bg.cache?.color ?? '#1a2a3a'
   const bgOverlay =

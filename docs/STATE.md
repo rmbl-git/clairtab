@@ -1,12 +1,12 @@
 # Project State
 
-- DerniÃ¨re mise Ã  jour : 2026-07-24
-- Commit ou version : tÃ¢che 002 validÃ©e manuellement dans Chrome
-- Phase actuelle : tÃ¢che 002 validÃ©e et clÃ´turÃ©e, tÃ¢che 003 en cours de dÃ©marrage
-- Work record actif : `docs/work-records/003-critical-path-robustness.md` (`in_progress`)
-- Ã‰tat du build : `npm run build` passe et produit `dist/` valide
-- Ã‰tat des tests : 35 tests vitest passÃ©s
-- Ã‰tat de la validation runtime : validÃ©e manuellement dans Chrome le 2026-07-24
+- Dernière mise à jour : 2026-07-24
+- Commit ou version : tâche 002 validée manuellement dans Chrome
+- Phase actuelle : tâche 002 validée et clôturée, tâche 003 implémentée — en attente de validation Chrome
+- Work record actif : `docs/work-records/003-critical-path-robustness.md` (`implemented -- unverified`)
+- État du build : `npm run build` passe et produit `dist/` valide
+- État des tests : 50 tests vitest passés
+- État de la validation runtime : tâche 003 non encore validée dans Chrome
 - URL de preview : aucune
 
 ## Objectif actuel
@@ -89,7 +89,7 @@ Blocages pour la cl\u00f4ture de l\u2019int\u00e9gration photo :
 - validation des quotas et conditions ;
 - politique de confidentialit\u00e9.
 
-## Prochaine t\u00e2che recommand\u00e9e
 ## Prochaine tâche recommandée
 
-docs/work-records/003-critical-path-robustness.md (tâche 003 active, intégration des photographies automatiques)
+docs/work-records/003-critical-path-robustness.md (implémentée, en attente de validation Chrome)
+

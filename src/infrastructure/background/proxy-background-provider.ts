@@ -32,7 +32,8 @@ export function createProxyBackgroundProvider(
   getLocalFallback: (theme: ThemeId) => BackgroundCache,
   proxyUrl?: string
 ): BackgroundProvider {
-  const PROXY_URL = proxyUrl ?? import.meta.env.VITE_BACKGROUND_PROXY_URL
+  const rawProxyUrl = proxyUrl ?? import.meta.env.VITE_BACKGROUND_PROXY_URL
+  const PROXY_URL = rawProxyUrl || undefined
   const CACHE_TTL_MS = 1000 * 60 * 60 * 24 // 24 hours
   const REQUEST_TIMEOUT_MS = 1000 * 15 // 15 seconds
 

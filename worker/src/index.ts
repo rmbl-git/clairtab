@@ -1,31 +1,27 @@
 const THEME_QUERIES: Record<string, string[]> = {
-  landscapes: ['landscapes', 'mountains', 'desert dunes'],
-  architecture: ['modern architecture', 'brutalism', 'geometric building'],
-  nature: ['forest', 'ocean', 'botanical'],
-  minimal: ['minimal abstract', 'minimal interior', 'monochrome composition'],
+  landscapes: ['landscape mountains desert', 'mountain landscape', 'desert landscape'],
+  architecture: ['architecture modern building', 'modern architecture', 'geometric building'],
+  nature: ['nature forest ocean', 'forest nature', 'ocean nature plants'],
+  minimal: ['minimal abstract monochrome', 'minimal abstract', 'monochrome composition'],
 }
 
 const ALLOWED_THEMES = new Set(Object.keys(THEME_QUERIES))
 
-interface Photo {
-  id: string
-  urls: {
-    regular: string
-    small: string
-  }
-  alt_description: string | null
-  color: string | null
-  user: {
-    name: string
-    links: {
-      html: string
-    }
-  }
+interface PixabayHit {
+  id: number
+  largeImageURL: string
+  webformatURL: string
+  previewURL: string
+  tags: string
+  user: string
+  userImageURL: string
+  pageURL: string
 }
 
 interface PhotoItem {
   photoId: string
   imageUrl: string
+  previewUrl: string
   alt: string
   color: string
   photographer: string
@@ -34,109 +30,129 @@ interface PhotoItem {
   providerUrl: string
 }
 
-function buildPhotoItem(photo: Photo): PhotoItem {
+function buildPhotoItem(hit: PixabayHit): PhotoItem {
+  const imageUrl = hit.largeImageURL || hit.webformatURL || hit.previewURL
+  const alt = hit.tags ? hit.tags.split(',').slice(0, 5).join(', ') : 'Pixabay photo'
+  const color = '#000000'
+
   return {
-    photoId: photo.id,
-    imageUrl: photo.urls.regular,
-    alt: photo.alt_description || 'Unsplash photo',
-    color: photo.color || '#000000',
-    photographer: photo.user.name,
-    photographerUrl: photo.user.links.html,
-    provider: 'Unsplash',
-    providerUrl: 'https://unsplash.com',
+    photoId: String(hit.id),
+    imageUrl,
+    previewUrl: hit.previewURL,
+    alt,
+    color,
+    photographer: hit.user,
+    photographerUrl: hit.userImageURL,
+    provider: 'Pixabay',
+    providerUrl: 'https://pixabay.com',
   }
 }
 
 function pickQueries(theme: string): string[] {
   const queries = THEME_QUERIES[theme]
-  if (!queries) return ['landscapes']
+  if (!queries) return ['landscape mountains desert']
   return queries
 }
 
-export default {
-  async fetch(request: Request, env: Record<string, string>): Promise<Response> {
-    const url = new URL(request.url)
-    const theme = url.searchParams.get('theme')
+const CORS_HEADERS: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
 
-    if (!theme || !ALLOWED_THEMES.has(theme)) {
-      return new Response(JSON.stringify({ error: 'Invalid theme' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      })
+function corsResponse(body: string, status: number, extraHeaders: Record<string, string> = {}): Response {
+  return new Response(body, {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      ...CORS_HEADERS,
+      ...extraHeaders,
+    },
+  })
+}
+
+export async function handleRequest(request: Request, env: Record<string, string>): Promise<Response> {
+  const url = new URL(request.url)
+
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: CORS_HEADERS,
+    })
+  }
+
+  const theme = url.searchParams.get('theme')
+
+  if (!theme || !ALLOWED_THEMES.has(theme)) {
+    return corsResponse(JSON.stringify({ error: 'Invalid theme' }), 400)
+  }
+
+  if (!env.PIXABAY_API_KEY) {
+    return corsResponse(JSON.stringify({ error: 'Server misconfigured' }), 500)
+  }
+
+  const queries = pickQueries(theme)
+  const query = queries[Math.floor(Math.random() * queries.length)]
+  const perPage = 20
+
+  const pixabayUrl = new URL('https://pixabay.com/api/')
+  pixabayUrl.searchParams.set('key', env.PIXABAY_API_KEY)
+  pixabayUrl.searchParams.set('q', query)
+  pixabayUrl.searchParams.set('image_type', 'photo')
+  pixabayUrl.searchParams.set('orientation', 'horizontal')
+  pixabayUrl.searchParams.set('per_page', String(perPage))
+  pixabayUrl.searchParams.set('page', '1')
+  pixabayUrl.searchParams.set('safesearch', 'true')
+
+  try {
+    const response = await fetch(pixabayUrl.toString(), {
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        return corsResponse(JSON.stringify({ error: 'Rate limit exceeded' }), 429)
+      }
+      return corsResponse(JSON.stringify({ error: 'Upstream error' }), response.status)
     }
 
-    if (!env.UNSPLASH_ACCESS_KEY) {
-      return new Response(JSON.stringify({ error: 'Server misconfigured' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      })
+    const data = (await response.json()) as unknown
+    const hits: PixabayHit[] = (data as { hits?: PixabayHit[] }).hits || []
+
+    const validHits = hits.filter((hit) => hit.largeImageURL || hit.webformatURL)
+
+    if (!validHits.length) {
+      return corsResponse(JSON.stringify({ error: 'No photos' }), 502)
     }
 
-    const queries = pickQueries(theme)
-    const query = queries[Math.floor(Math.random() * queries.length)]
-    const count = 12
+    const images: PhotoItem[] = validHits.map(buildPhotoItem)
+    const now = new Date().toISOString()
+    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString()
 
-    const unsplashUrl = new URL('https://api.unsplash.com/photos/random')
-    unsplashUrl.searchParams.set('query', query)
-    unsplashUrl.searchParams.set('count', String(count))
-    unsplashUrl.searchParams.set('orientation', 'landscape')
-    unsplashUrl.searchParams.set('client_id', env.UNSPLASH_ACCESS_KEY)
-
-    try {
-      const response = await fetch(unsplashUrl.toString(), {
+    return new Response(
+      JSON.stringify({
+        theme,
+        images,
+        fetchedAt: now,
+        expiresAt: expires,
+        lastDisplayedPhotoId: null,
+      }),
+      {
+        status: 200,
         headers: {
-          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=3600',
+          ...CORS_HEADERS,
         },
-      })
-
-      if (!response.ok) {
-        if (response.status === 429) {
-          return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
-            status: 429,
-            headers: { 'Content-Type': 'application/json' },
-          })
-        }
-        return new Response(JSON.stringify({ error: 'Upstream error' }), {
-          status: response.status,
-          headers: { 'Content-Type': 'application/json' },
-        })
       }
+    )
+  } catch {
+    return corsResponse(JSON.stringify({ error: 'Network error' }), 502)
+  }
+}
 
-      const data = (await response.json()) as unknown
-      const photos: Photo[] = Array.isArray(data) ? data : [data]
-
-      if (!photos.length) {
-        return new Response(JSON.stringify({ error: 'No photos' }), {
-          status: 502,
-          headers: { 'Content-Type': 'application/json' },
-        })
-      }
-
-      const images: PhotoItem[] = photos.map(buildPhotoItem)
-      const now = new Date().toISOString()
-      const expires = new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString()
-
-      return new Response(
-        JSON.stringify({
-          theme,
-          images,
-          fetchedAt: now,
-          expiresAt: expires,
-          lastDisplayedPhotoId: null,
-        }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=3600',
-          },
-        }
-      )
-    } catch {
-      return new Response(JSON.stringify({ error: 'Network error' }), {
-        status: 502,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
-  },
+export default {
+  fetch: handleRequest,
 }

@@ -1,6 +1,6 @@
 ---
 task: 003-critical-path-robustness
-status: in_progress
+status: implemented -- unverified
 owner_agent: unassigned
 created: 2026-07-24
 last_updated: 2026-07-24
@@ -20,7 +20,7 @@ Rendre la première tranche suffisamment robuste pour une démo publique : inté
 - allowlist de thèmes ;
 - cache ;
 - contrat normalisé ;
-- attribution Unsplash ;
+- attribution Pixabay ;
 - fallback et cache client ;
 - timeout et annulation ;
 - état de stockage en erreur ;
@@ -37,7 +37,7 @@ Rendre la première tranche suffisamment robuste pour une démo publique : inté
 
 ## Out Of Scope
 
-- demande d’approbation production Unsplash si le compte n’est pas disponible ;
+- demande d’approbation production Pixabay si le compte n’est pas disponible ;
 - publication Web Store ;
 - analytics ;
 - synchronisation ;
@@ -66,7 +66,7 @@ Pour démarrer :
 
 Pour clôturer l’intégration distante :
 
-- clé Unsplash ;
+- clé Pixabay ;
 - environnement Worker ;
 - URL preview ;
 - confirmation des conditions applicables.
@@ -94,7 +94,7 @@ Pour clôturer l’intégration distante :
 1. Implémenter et tester le contrat proxy côté client.
 2. Créer le Worker avec allowlist et validation.
 3. Ajouter secret et configuration locale.
-4. Intégrer Unsplash conformément aux règles.
+4. Intégrer Pixabay conformément aux règles.
 5. Ajouter cache edge et client.
 6. Implémenter attribution.
 7. Simuler timeout, 429, 502 et image cassée.
@@ -107,19 +107,19 @@ Pour clôturer l’intégration distante :
 
 ## Planned Checks
 
-- [ ] typecheck extension et Worker
-- [ ] lint
-- [ ] tests unitaires
-- [ ] tests composants
-- [ ] tests Worker
+- [x] typecheck extension et Worker
+- [x] lint
+- [x] tests unitaires
+- [x] tests composants
+- [x] tests Worker
 - [ ] tests end-to-end
-- [ ] build extension
+- [x] build extension
 - [ ] build Worker
 - [ ] scan de secrets
-- [ ] inspection du manifeste
-- [ ] validation CSP
+- [x] inspection du manifeste
+- [x] validation CSP
 - [ ] test proxy cache hit/miss
-- [ ] test 400, 429, 502, 503
+- [x] test 400, 429, 502, 503
 - [ ] test réseau lent
 - [ ] test hors ligne
 - [ ] test image cassée

@@ -285,7 +285,7 @@ Aucune télémétrie n’est requise pour le MVP.
 - **FR-052** Le chargement distant ne doit pas bloquer les tâches, la recherche ou les raccourcis.
 - **FR-053** La dernière photo valide doit être conservée en cache.
 - **FR-054** Un fallback local doit exister pour chaque thème ou pour l’application entière.
-- **FR-055** Une photo Unsplash doit afficher le photographe et un lien d’attribution conforme.
+- **FR-055** Une photo Pixabay doit afficher le photographe et un lien d’attribution conforme.
 - **FR-056** Les URLs d’image doivent provenir de la réponse normalisée du proxy.
 - **FR-057** Une réponse distante invalide doit être rejetée.
 - **FR-058** Une action manuelle « Changer le fond » doit être limitée pour éviter les appels abusifs.
@@ -407,7 +407,7 @@ color: CSS color
 alt: string
 photographerName: string
 photographerUrl: HTTPS URL
-providerName: "Unsplash"
+providerName: "Pixabay"
 providerUrl: HTTPS URL
 fetchedAt: ISO datetime
 expiresAt: ISO datetime
@@ -447,7 +447,7 @@ Sortie normalisée :
 ```json
 {
   "photoId": "string",
-  "imageUrl": "https://images.unsplash.com/...",
+  "imageUrl": "https://cdn.pixabay.com/...",
   "width": 2400,
   "height": 1600,
   "color": "#6b7280",
@@ -569,7 +569,7 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 - Les quatre thèmes proposés sont-ils suffisants ?
 - Le produit doit-il autoriser les URLs `http:` hors localhost ?
 - Une politique de confidentialité publique est-elle déjà hébergée ?
-- Le compte Unsplash et l’accès production sont-ils disponibles ?
+- Le compte Pixabay et l’accès production sont-ils disponibles ?
 
 ## 24. Évolutions possibles
 
@@ -584,3 +584,4 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 - thèmes additionnels ;
 - raccourcis clavier ;
 - widgets additionnels seulement s’ils restent compatibles avec l’objectif unique.
+
