@@ -1,13 +1,12 @@
 # Project State
 
 - Dernière mise à jour : 2026-07-24
-- Commit ou version : bootstrap vérifié en runtime, tâche 001 clos
-- Phase actuelle : bootstrap vérifié, tâche 002 prête à démarrer
-- Work record actif : `docs/work-records/001-bootstrap-extension.md` (clos)
-- Prochaine tâche : `docs/work-records/002-first-vertical-slice.md`
+- Commit ou version : tâche 002 validée manuellement dans Chrome
+- Phase actuelle : tâche 002 validée et clôturée, tâche 003 en cours de démarrage
+- Work record actif : `docs/work-records/003-critical-path-robustness.md` (`in_progress`)
 - État du build : `npm run build` passe et produit `dist/` valide
-- État des tests : 1 test vitest passé
-- État de la validation runtime : validée en navigateur Chrome
+- État des tests : 35 tests vitest passés
+- État de la validation runtime : validée manuellement dans Chrome le 2026-07-24
 - URL de preview : aucune
 
 ## Objectif actuel
@@ -17,22 +16,37 @@ Obtenir une extension Manifest V3 minimale, chargeable en mode unpacked, afficha
 ## Ce qui fonctionne
 
 - Repository applicatif initialisé (React, TypeScript, Vite, TailwindCSS)
-- Manifeste V3 avec permissions minimales (storage uniquement)
+- Manifeste V3 avec permissions minimales (storage + favicon)
 - Build `npm run build` produit un `dist/` valide
-- Vitest pass\u00e9 (1 test)
-- Extension chargeable en mode unpacked et valid\u00e9e dans Chrome
-- Shell ClairTab affich\u00e9 correctement dans le nouvel onglet
-- Console propre, aucune requ\u00eate r\u00e9seau inattendue
+- Vitest passé (35 tests)
+- Extension chargeable en mode unpacked et validée dans Chrome
+- Shell ClairTab affiché correctement dans le nouvel onglet
+- Console propre, aucune requête réseau inattendue
+- Fonctionnalités locales implémentées :
+  - 4 thèmes de fond locaux avec fallback
+  - Mode Focus avec ajout, complétion et suppression de tâches
+  - Mode Recherche avec navigation Google explicite
+  - Bascule entre modes persistée
+  - Raccourcis avec CRUD et validation URL
+  - Favicon automatique des raccourcis avec fallback monogramme
+  - Bouton crayon circulaire superposé, masqué au repos, visible au hover/focus tactile
+  - Suppression uniquement depuis la modale avec confirmation explicite
+  - Panneau de réglages (mode, thème, voile, citations, animations)
+  - Barre de recherche avec bouton loupe SVG monochrome
+  - Citation d'ambiance locale
+  - Stockage via chrome.storage.local avec fallback localStorage et mémoire
+  - Centrage de l'interface (flex, 100dvh)
+  - Modale de raccourci (ajout/édition, validation, focus trap)
+  - Fallback SVG local pour chaque thème (V1)
+  - Composants accessibles (clavier, focus visible, responsive)
 
-## Ce qui est partiellement impl\u00e9ment\u00e9
+## Ce qui est partiellement implémenté
 
-- Bootstrap du code r\u00e9alis\u00e9 et valid\u00e9 en runtime (React, TypeScript, Vite, Tailwind, manifeste V3, shell minimal, tests Vitest pass\u00e9s, icônes locales, README mis \u00e0 jour).
-- Int\u00e9gration Unsplash non provisionn\u00e9e (attend un proxy).
+- Intégration de photographies automatiques en arrière-plan (tâche 003 en cours).
 
 ## Ce qui ne fonctionne pas
 
-- Aucun proxy d\u00e9ploy\u00e9
-- Int\u00e9gration photo distante non disponible
+- Aucun blocage connu pour le MVP à ce stade.
 
 ## Risques actifs
 
@@ -62,6 +76,7 @@ Obtenir une extension Manifest V3 minimale, chargeable en mode unpacked, afficha
 - Documentation produit et technique cr\u00e9\u00e9e le 2026-07-24.
 - Bootstrap r\u00e9alis\u00e9 le 2026-07-24. Preuve dans `docs/evidence/001-bootstrap-extension.md`.
 - Validation runtime Chrome confirm\u00e9e manuellement le 2026-07-24.
+- Premi\u00e8re tranche verticale locale impl\u00e9ment\u00e9e le 2026-07-24. Preuve dans `docs/evidence/002-first-vertical-slice.md`.
 
 ## Blocages
 
@@ -75,5 +90,6 @@ Blocages pour la cl\u00f4ture de l\u2019int\u00e9gration photo :
 - politique de confidentialit\u00e9.
 
 ## Prochaine t\u00e2che recommand\u00e9e
+## Prochaine t�che recommand�e
 
-`docs/work-records/002-first-vertical-slice.md`
+docs/work-records/003-critical-path-robustness.md (t�che 003 active, int�gration des photographies automatiques)

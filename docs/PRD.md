@@ -144,8 +144,8 @@ Aucune télémétrie n’est requise pour le MVP.
 
 - **Intention :** commencer une action.
 - **Action :** ouvrir un nouvel onglet Chrome.
-- **Réponse du produit :** afficher le shell local et les données persistées.
-- **État visible :** fond local ou couleur de base, module principal, raccourcis.
+- **Réponse du produit :** afficher le shell local avec les modules visibles selon les réglages, les données persistées et le fond local.
+- **État visible :** fond local par thème, module principal (Recherche ou To-do ou les deux avec onglets), raccourcis.
 - **Donnée affectée :** aucune.
 - **Erreur possible :** stockage illisible.
 - **Récupération :** valeurs par défaut et message non bloquant ; conserver une trace technique sans contenu utilisateur.
@@ -371,6 +371,8 @@ onboardingCompleted: boolean
 primaryMode: "focus" | "search"
 theme: "landscapes" | "architecture" | "minimal" | "nature"
 reduceMotion: boolean | "system"
+showSearchModule: boolean
+showFocusModule: boolean
 ```
 
 ### `Task`
@@ -532,7 +534,7 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 
 ### Fiabilité
 
-- Fallback local.
+- Fallback local. Les quatre thèmes utilisent des fichiers SVG embarqués localement comme fallback de la V1. Ils ne sont pas les images principales finales — la tâche 003 ajoutera les photographies distantes. Si le fournisseur distant échoue, le fallback SVG ou gradient réapparaît.
 - Écriture de stockage encapsulée avec rollback.
 - Migrations versionnées.
 - Tests déterministes.

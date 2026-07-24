@@ -1,6 +1,6 @@
 ---
 task: 003-critical-path-robustness
-status: ready
+status: in_progress
 owner_agent: unassigned
 created: 2026-07-24
 last_updated: 2026-07-24
