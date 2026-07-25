@@ -202,6 +202,15 @@ export default function App() {
     }
   }, [])
 
+  const handleReorderShortcuts = useCallback((reordered: Shortcut[]) => {
+    setState((prev: AppState | null) => {
+      if (!prev) return prev
+      const next: AppState = { ...prev, shortcuts: reordered }
+      saveState(next)
+      return next
+    })
+  }, [])
+
   const handleSearchSubmit = useCallback((query: string) => {
     const trimmed = query.trim()
     if (!trimmed) return 'Search query cannot be empty.'
@@ -308,6 +317,7 @@ export default function App() {
               onAdd={addShortcut}
               onDelete={deleteShortcut}
               onUpdate={updateShortcut}
+              onReorder={handleReorderShortcuts}
             />
           </div>
         </div>

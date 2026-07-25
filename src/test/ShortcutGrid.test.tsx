@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { ShortcutGrid } from '../features/shortcuts/ShortcutGrid'
+import { ShortcutGrid, ShortcutGridHandle } from '../features/shortcuts/ShortcutGrid'
 import type { Shortcut } from '../domain/types'
 
 vi.mock('../domain/validators', async () => {
@@ -86,8 +86,8 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Modifier le raccourci'))
-    expect(screen.getByLabelText('Modifier le raccourci', { selector: '[aria-modal="true"]' })).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
+    expect(screen.getByRole('dialog', { name: 'Modifier le raccourci' })).toBeDefined()
     expect(screen.getByLabelText('Nom').closest('input')).toHaveValue('GitHub')
     expect(screen.getByLabelText('URL').closest('input')).toHaveValue('https://github.com')
   })
@@ -101,7 +101,7 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    const editButton = screen.getByLabelText('Modifier le raccourci')
+    const editButton = screen.getByRole('button', { name: 'Modifier le raccourci GitHub' })
     editButton.focus()
     fireEvent.click(editButton)
     fireEvent.click(screen.getByLabelText('Fermer'))
@@ -122,7 +122,7 @@ describe('ShortcutGrid', () => {
     expect(screen.queryByText('Supprimer cet élément')).toBeNull()
 
     fireEvent.click(screen.getByLabelText('Fermer'))
-    fireEvent.click(screen.getByLabelText('Modifier le raccourci'))
+    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
     expect(screen.getByText('Supprimer cet élément')).toBeDefined()
   })
 
@@ -137,7 +137,7 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Modifier le raccourci'))
+    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
     fireEvent.click(screen.getByText('Supprimer cet élément'))
     fireEvent.click(screen.getByText('Confirmer la suppression'))
     expect(onDelete).toHaveBeenCalledWith('1')
@@ -154,10 +154,49 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Modifier le raccourci'))
+    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
     fireEvent.click(screen.getByText('Supprimer cet élément'))
     expect(screen.getByText('Confirmer la suppression')).toBeDefined()
     expect(onDelete).not.toHaveBeenCalled()
-    expect(screen.getByLabelText('Modifier le raccourci', { selector: '[aria-modal="true"]' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' })).toBeDefined()
+  })
+
+  it('does not force new tab on shortcut link', () => {
+    render(
+      <ShortcutGrid
+        shortcuts={mockShortcuts}
+        onAdd={vi.fn()}
+        onDelete={vi.fn()}
+        onUpdate={vi.fn()}
+      />
+    )
+    const link = document.querySelector('.claritab-shortcut-tile')
+    expect(link).toHaveAttribute('href', 'https://github.com')
+    expect(link).not.toHaveAttribute('target', '_blank')
+  })
+
+  it('blocks link navigation after drag activation', async () => {
+    const ref = { current: null as ShortcutGridHandle | null }
+    render(
+      <ShortcutGrid
+        ref={ref}
+        shortcuts={mockShortcuts}
+        onAdd={vi.fn()}
+        onDelete={vi.fn()}
+        onUpdate={vi.fn()}
+        onReorder={vi.fn()}
+      />
+    )
+
+    ref.current?.activateDragForTest('1')
+
+    const link = document.querySelector('.claritab-shortcut-tile') as HTMLAnchorElement | null
+    expect(link).not.toBeNull()
+
+    const preventSpy = vi.spyOn(Event.prototype, 'preventDefault')
+    fireEvent.click(link!)
+    expect(preventSpy).toHaveBeenCalled()
+    preventSpy.mockRestore()
+    ref.current?.deactivateDragForTest()
   })
 })
