@@ -119,7 +119,8 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group claritab-settings-separator">
+      <div className="claritab-settings-divider" aria-hidden="true" />
+      <fieldset className="claritab-settings-group">
         <legend>Default mode</legend>
         <label>
           <input
@@ -141,7 +142,8 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group claritab-settings-separator">
+      <div className="claritab-settings-divider" aria-hidden="true" />
+      <fieldset className="claritab-settings-group">
         <legend>Background overlay</legend>
         <label>
           <input
@@ -172,7 +174,8 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group claritab-settings-separator">
+      <div className="claritab-settings-divider" aria-hidden="true" />
+      <fieldset className="claritab-settings-group">
         <legend>Quote</legend>
         <label>
           <input
@@ -184,7 +187,8 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group claritab-settings-separator">
+      <div className="claritab-settings-divider" aria-hidden="true" />
+      <fieldset className="claritab-settings-group">
         <legend>Tasks</legend>
         <label>
           <input
@@ -196,7 +200,8 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group claritab-settings-separator">
+      <div className="claritab-settings-divider" aria-hidden="true" />
+      <fieldset className="claritab-settings-group">
         <legend>Custom background</legend>
         <input
           ref={fileInputRef}
