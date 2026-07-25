@@ -1,12 +1,12 @@
 const QUOTES = [
-  'L\'important c\'est de ne pas s\'arrêter.',
-  'Chaque geste est un pas vers l\'essentiel.',
-  'Le calme commence ici.',
-  'Une action à la fois.',
-  'Ce qui compte est devant vous.',
-  'L\'attention est la première richesse.',
-  'Commencer, c\'est déjà avancer.',
-  'La prochaine étape vous attend.',
+  'What matters is to keep going.',
+  'Every step brings you closer to what matters.',
+  'Calm begins here.',
+  'One action at a time.',
+  'What matters is ahead of you.',
+  'Attention is your greatest resource.',
+  'Starting is already moving forward.',
+  'The next step is waiting.',
 ]
 
 function getQuote(): string {

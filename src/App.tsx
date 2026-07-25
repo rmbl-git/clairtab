@@ -12,7 +12,7 @@ export default function App() {
             <p className="text-gray-300 text-sm">Prêt.</p>
           </div>
           <div className="mt-6 flex justify-center">
-            <div className="flex gap-2" role="list" aria-label="Raccourcis">
+            <div className="flex gap-2" role="list" aria-label="Shortcuts">
               <span className="block w-14 h-14 bg-black/40 border border-white/10 rounded-xl" role="listitem" aria-hidden="true" />
               <span className="block w-14 h-14 bg-black/40 border border-white/10 rounded-xl" role="listitem" aria-hidden="true" />
               <span className="block w-14 h-14 bg-black/40 border border-white/10 rounded-xl" role="listitem" aria-hidden="true" />

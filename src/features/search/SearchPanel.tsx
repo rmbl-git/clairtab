@@ -12,7 +12,7 @@ export function SearchPanel({ onSubmit }: Props) {
     e.preventDefault()
     const trimmed = input.trim()
     if (!trimmed) {
-      setError("La requête ne peut pas être vide.")
+      setError("Search query cannot be empty.")
       return
     }
     const err = onSubmit(trimmed)
@@ -27,13 +27,13 @@ export function SearchPanel({ onSubmit }: Props) {
   return (
     <form className="claritab-search-panel" onSubmit={handleSubmit}>
       <label htmlFor="search-input" className="sr-only">
-        Rechercher sur Google
+        Search Google
       </label>
       <input
         id="search-input"
         type="search"
         className="claritab-search-input"
-        placeholder="Rechercher sur Google..."
+        placeholder="Search Google..."
         value={input}
         onChange={(e) => {
           setInput(e.target.value)
@@ -44,7 +44,7 @@ export function SearchPanel({ onSubmit }: Props) {
       <button
         type="submit"
         className="claritab-search-submit"
-        aria-label="Lancer la recherche"
+        aria-label="Submit search"
       >
         <svg
           aria-hidden="true"

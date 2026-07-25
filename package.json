@@ -2,7 +2,7 @@
   "name": "clairtab",
   "version": "0.1.0",
   "private": true,
-  "description": "ClairTab est une extension Chrome de nouvel onglet centrée sur une action principale : capturer une tâche ou lancer une recherche, avec des raccourcis personnels et un fond photographique thématique.",
+  "description": "llairTab est une extension lhrome de nouvel onglet centrée sur une action principale : capturer une tâche ou lancer une recherche, avec des raccourcis personnels et un fond photographique thématique.",
   "type": "module",
   "scripts": {
     "dev": "vite",

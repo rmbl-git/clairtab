@@ -45,7 +45,7 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    expect(screen.queryByLabelText('Supprimer GitHub')).toBeNull()
+    expect(screen.queryByLabelText('Delete GitHub')).toBeNull()
   })
 
   it('opens add modal when clicking add button', () => {
@@ -57,9 +57,9 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Ajouter un raccourci'))
-    expect(screen.getByLabelText('Ajouter un raccourci', { selector: '[aria-modal="true"]' })).toBeDefined()
-    expect(screen.getByLabelText('Fermer')).toBeDefined()
+    fireEvent.click(screen.getByLabelText('Add shortcut'))
+    expect(screen.getByLabelText('Add shortcut', { selector: '[aria-modal="true"]' })).toBeDefined()
+    expect(screen.getByLabelText('Close')).toBeDefined()
   })
 
   it('closes modal without saving on Escape', () => {
@@ -71,10 +71,10 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Ajouter un raccourci'))
-    expect(screen.getByLabelText('Fermer')).toBeDefined()
+    fireEvent.click(screen.getByLabelText('Add shortcut'))
+    expect(screen.getByLabelText('Close')).toBeDefined()
     fireEvent.keyDown(document, { key: 'Escape' })
-    expect(screen.queryByLabelText('Fermer')).toBeNull()
+    expect(screen.queryByLabelText('Close')).toBeNull()
   })
 
   it('opens edit modal with pre-filled fields', () => {
@@ -86,9 +86,9 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
-    expect(screen.getByRole('dialog', { name: 'Modifier le raccourci' })).toBeDefined()
-    expect(screen.getByLabelText('Nom').closest('input')).toHaveValue('GitHub')
+    fireEvent.click(screen.getByRole('button', { name: 'Edit shortcut GitHub' }))
+    expect(screen.getByRole('dialog', { name: 'Edit shortcut' })).toBeDefined()
+    expect(screen.getByLabelText('Name').closest('input')).toHaveValue('GitHub')
     expect(screen.getByLabelText('URL').closest('input')).toHaveValue('https://github.com')
   })
 
@@ -101,10 +101,10 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    const editButton = screen.getByRole('button', { name: 'Modifier le raccourci GitHub' })
+    const editButton = screen.getByRole('button', { name: 'Edit shortcut GitHub' })
     editButton.focus()
     fireEvent.click(editButton)
-    fireEvent.click(screen.getByLabelText('Fermer'))
+    fireEvent.click(screen.getByLabelText('Close'))
     const link = document.querySelector('.claritab-shortcut-tile')
     expect(document.activeElement).toBe(link)
   })
@@ -118,12 +118,12 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByLabelText('Ajouter un raccourci'))
-    expect(screen.queryByText('Supprimer cet élément')).toBeNull()
+    fireEvent.click(screen.getByLabelText('Add shortcut'))
+    expect(screen.queryByText('Delete shortcut')).toBeNull()
 
-    fireEvent.click(screen.getByLabelText('Fermer'))
-    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
-    expect(screen.getByText('Supprimer cet élément')).toBeDefined()
+    fireEvent.click(screen.getByLabelText('Close'))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit shortcut GitHub' }))
+    expect(screen.getByText('Delete shortcut')).toBeDefined()
   })
 
   it('deletes shortcut with confirmation from modal', () => {
@@ -137,9 +137,9 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
-    fireEvent.click(screen.getByText('Supprimer cet élément'))
-    fireEvent.click(screen.getByText('Confirmer la suppression'))
+    fireEvent.click(screen.getByRole('button', { name: 'Edit shortcut GitHub' }))
+    fireEvent.click(screen.getByText('Delete shortcut'))
+    fireEvent.click(screen.getByText('Confirm deletion'))
     expect(onDelete).toHaveBeenCalledWith('1')
     confirmSpy.mockRestore()
   })
@@ -154,26 +154,32 @@ describe('ShortcutGrid', () => {
         onUpdate={vi.fn()}
       />
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' }))
-    fireEvent.click(screen.getByText('Supprimer cet élément'))
-    expect(screen.getByText('Confirmer la suppression')).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'Edit shortcut GitHub' }))
+    fireEvent.click(screen.getByText('Delete shortcut'))
+    expect(screen.getByText('Confirm deletion')).toBeDefined()
     expect(onDelete).not.toHaveBeenCalled()
-    expect(screen.getByRole('button', { name: 'Modifier le raccourci GitHub' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'Edit shortcut GitHub' })).toBeDefined()
   })
 
-  it('does not force new tab on shortcut link', () => {
-    render(
-      <ShortcutGrid
-        shortcuts={mockShortcuts}
-        onAdd={vi.fn()}
-        onDelete={vi.fn()}
-        onUpdate={vi.fn()}
-      />
-    )
-    const link = document.querySelector('.claritab-shortcut-tile')
-    expect(link).toHaveAttribute('href', 'https://github.com')
-    expect(link).not.toHaveAttribute('target', '_blank')
-  })
+    it('renders a shortcut button without forcing a new tab', () => {
+      render(
+        <ShortcutGrid
+          shortcuts={mockShortcuts}
+          onAdd={vi.fn()}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+        />
+      )
+
+      const shortcutButton = document.querySelector<HTMLButtonElement>(
+        'button.claritab-shortcut-tile[data-shortcut-id="1"]'
+      )
+
+      expect(shortcutButton).toBeInTheDocument()
+      expect(shortcutButton).toHaveAttribute('type', 'button')
+      expect(shortcutButton).not.toHaveAttribute('href')
+      expect(shortcutButton).not.toHaveAttribute('target')
+    })
 
   it('blocks link navigation after drag activation', async () => {
     const ref = { current: null as ShortcutGridHandle | null }
@@ -190,7 +196,7 @@ describe('ShortcutGrid', () => {
 
     ref.current?.activateDragForTest('1')
 
-    const link = document.querySelector('.claritab-shortcut-tile') as HTMLAnchorElement | null
+    const link = document.querySelector('.claritab-shortcut-tile') as HTMLButtonElement | null
     expect(link).not.toBeNull()
 
     const preventSpy = vi.spyOn(Event.prototype, 'preventDefault')

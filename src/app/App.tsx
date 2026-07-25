@@ -226,7 +226,7 @@ export default function App() {
         <main className="claritab-main">
           <div className="claritab-content">
             <div className="claritab-container">
-              <div className="text-gray-400 text-sm">Chargement.</div>
+              <div className="text-gray-400 text-sm">Loading.</div>
             </div>
           </div>
         </main>
@@ -281,7 +281,7 @@ export default function App() {
         />
       )
     }
-    return <p className="claritab-empty">Aucun module affich&eacute;.</p>
+    return <p className="claritab-empty">No modules are displayed.</p>
   }
 
   return (
@@ -294,7 +294,7 @@ export default function App() {
         <button
           className="claritab-settings-toggle"
           onClick={() => setSettingsOpen(!settingsOpen)}
-          aria-label="Ouvrir les r&eacute;glages"
+          aria-label="Open settings"
           type="button"
         >
           &#9881;

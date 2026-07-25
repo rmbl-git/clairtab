@@ -11,11 +11,11 @@ export function isAllowedImageType(type: string): boolean {
 
 export async function processImageFile(file: File): Promise<string> {
   if (file.size > MAX_FILE_SIZE) {
-    throw new Error('La photo sélectionnée dépasse la taille maximale autorisée de 8 Mo.')
+    throw new Error('The selected photo exceeds the maximum allowed size of 8 MB.')
   }
 
   if (!isAllowedImageType(file.type)) {
-    throw new Error('Format de fichier non pris en charge.')
+    throw new Error('Unsupported file format.')
   }
 
   const dataUrl = await readFileAsDataURL(file)
@@ -47,7 +47,7 @@ function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(new Error('Erreur lors de la lecture du fichier.'))
+    reader.onerror = () => reject(new Error('An error occurred while reading the file.'))
     reader.readAsDataURL(file)
   })
 }

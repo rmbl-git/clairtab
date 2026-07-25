@@ -25,7 +25,7 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
     e.preventDefault()
     const trimmed = input.trim()
     if (!trimmed) {
-      setError("La tâche ne peut pas être vide.")
+      setError("Task cannot be empty.")
       return
     }
     const err = onAdd(trimmed)
@@ -41,14 +41,14 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
     <form className="claritab-task-panel" onSubmit={handleSubmit}>
       <div className="claritab-task-input-row">
         <label htmlFor="task-input" className="sr-only">
-          Nouvelle tâche
+          New task
         </label>
         <input
           id="task-input"
           ref={inputRef}
           type="text"
           className="claritab-task-input"
-          placeholder="Que veux-tu accomplir ?"
+          placeholder="What do you want to accomplish?"
           value={input}
           onChange={(e) => {
             setInput(e.target.value)
@@ -57,7 +57,7 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
           maxLength={160}
           aria-describedby={error ? 'task-error' : undefined}
         />
-        <button type="submit" className="claritab-task-add" aria-label="Ajouter la tâche">
+        <button type="submit" className="claritab-task-add" aria-label="Add task">
           +
         </button>
       </div>
@@ -67,7 +67,7 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
         </p>
       )}
       {activeTasks.length > 0 && (
-        <ul className="claritab-task-list" aria-label="Tâches actives">
+        <ul className="claritab-task-list" aria-label="Active tasks">
           {activeTasks.slice(0, 3).map((task) => (
             <li key={task.id} className="claritab-task-item">
               <label className="claritab-task-label">
@@ -82,7 +82,7 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
                 type="button"
                 className="claritab-task-delete"
                 onClick={() => onDelete(task.id)}
-                aria-label={`Supprimer ${task.title}`}
+                aria-label={`Delete ${task.title}`}
               >
                 ×
               </button>
@@ -90,15 +90,15 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
           ))}
           {activeTasks.length > 3 && (
             <li className="claritab-task-more">
-              {activeTasks.length - 3} tâche(s) supplémentaire(s)
+              {activeTasks.length - 3} more {activeTasks.length - 3 === 1 ? 'task' : 'tasks'}
             </li>
           )}
         </ul>
       )}
       {showCompleted && completedTasks.length > 0 && (
         <>
-          <h3 className="claritab-section-label">Terminées</h3>
-          <ul className="claritab-task-list claritab-task-list-completed" aria-label="Tâches terminées">
+          <h3 className="claritab-section-label">Completed</h3>
+          <ul className="claritab-task-list claritab-task-list-completed" aria-label="Completed tasks">
             {completedTasks.map((task) => (
               <li key={task.id} className="claritab-task-item claritab-task-completed">
                 <label className="claritab-task-label">
@@ -113,7 +113,7 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
                   type="button"
                   className="claritab-task-delete"
                   onClick={() => onDelete(task.id)}
-                  aria-label={`Supprimer ${task.title}`}
+                  aria-label={`Delete ${task.title}`}
                 >
                   ×
                 </button>
@@ -121,12 +121,12 @@ export function TaskPanel({ tasks, onAdd, onToggle, onDelete, onClearCompleted, 
             ))}
           </ul>
           <button type="button" className="claritab-clear-completed" onClick={onClearCompleted}>
-            Effacer les tâches terminées
+            Clear completed tasks
           </button>
         </>
       )}
       {tasks.length === 0 && (
-        <p className="claritab-empty">Aucune tâche. Ajoutez-en une pour commencer.</p>
+        <p className="claritab-empty">No tasks yet. Add one to get started.</p>
       )}
     </form>
   )

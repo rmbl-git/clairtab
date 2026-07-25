@@ -36,12 +36,12 @@ describe('processImageFile', () => {
 
   it('rejects files over 8 MB', async () => {
     const file = new File([new ArrayBuffer(9 * 1024 * 1024)], 'big.jpg', { type: 'image/jpeg' })
-    await expect(processImageFile(file)).rejects.toThrow('La photo sélectionnée dépasse la taille maximale autorisée de 8 Mo.')
+    await expect(processImageFile(file)).rejects.toThrow('The selected photo exceeds the maximum allowed size of 8 MB.')
   })
 
   it('rejects unsupported file types', async () => {
     const file = new File(['hello'], 'doc.pdf', { type: 'application/pdf' })
-    await expect(processImageFile(file)).rejects.toThrow('Format de fichier non pris en charge.')
+    await expect(processImageFile(file)).rejects.toThrow('Unsupported file format.')
   })
 
   it('accepts jpeg, png, webp, jpg', async () => {
@@ -95,7 +95,7 @@ describe('processImageFile', () => {
       mockReader.onerror?.()
     }, 10)
 
-    await expect(processImageFile(file)).rejects.toThrow('Erreur lors de la lecture du fichier.')
+    await expect(processImageFile(file)).rejects.toThrow('An error occurred while reading the file.')
   })
 })
 

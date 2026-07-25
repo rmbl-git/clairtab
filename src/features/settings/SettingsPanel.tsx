@@ -48,9 +48,9 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
     try {
       const dataUrl = await processImageFile(file)
       await onChooseCustomBackground?.(dataUrl)
-      showCustomSuccess('Fond d\'écran mis à jour.')
+      showCustomSuccess('Background updated.')
     } catch (err) {
-      setCustomError(err instanceof Error ? err.message : 'Erreur lors du traitement de l\'image.')
+      setCustomError(err instanceof Error ? err.message : 'An error occurred while processing the image.')
     } finally {
       setCustomLoading(false)
       if (fileInputRef.current) {
@@ -60,7 +60,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
   }
 
   const handleDisableBothModules = () => {
-    setError("Au moins un module doit rester activé.")
+    setError("At least one module must remain enabled.")
   }
 
   const handleSearchToggle = (checked: boolean) => {
@@ -82,13 +82,13 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
   }
 
   return (
-    <div className="claritab-settings" role="dialog" aria-label="Réglages">
-      <h2 className="claritab-settings-title">Réglages</h2>
+    <div className="claritab-settings" role="dialog" aria-label="Settings">
+      <h2 className="claritab-settings-title">Settings</h2>
       <button
         type="button"
         className="claritab-settings-close"
         onClick={onClose}
-        aria-label="Fermer les réglages"
+        aria-label="Close settings"
       >
         ×
       </button>
@@ -100,14 +100,14 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
       )}
 
       <fieldset className="claritab-settings-group">
-        <legend>Modules affichés</legend>
+        <legend>Visible modules</legend>
         <label>
           <input
             type="checkbox"
             checked={preferences.showSearchModule}
             onChange={(e) => handleSearchToggle(e.target.checked)}
           />
-          Afficher Recherche
+          Show Search
         </label>
         <label>
           <input
@@ -115,12 +115,12 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.showFocusModule}
             onChange={(e) => handleFocusToggle(e.target.checked)}
           />
-          Afficher To-do
+          Show Tasks
         </label>
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Mode par défaut</legend>
+        <legend>Default mode</legend>
         <label>
           <input
             type="radio"
@@ -137,12 +137,12 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.primaryMode === 'search'}
             onChange={() => onChange({ primaryMode: 'search' })}
           />
-          Recherche
+          Search
         </label>
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Voile</legend>
+        <legend>Background overlay</legend>
         <label>
           <input
             type="radio"
@@ -150,7 +150,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.veilIntensity === 'light'}
             onChange={() => onChange({ veilIntensity: 'light' })}
           />
-          Léger
+          Light
         </label>
         <label>
           <input
@@ -159,7 +159,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.veilIntensity === 'medium'}
             onChange={() => onChange({ veilIntensity: 'medium' })}
           />
-          Moyen
+          Medium
         </label>
         <label>
           <input
@@ -168,36 +168,36 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.veilIntensity === 'strong'}
             onChange={() => onChange({ veilIntensity: 'strong' })}
           />
-          Fort
+          Strong
         </label>
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Citation</legend>
+        <legend>Quote</legend>
         <label>
           <input
             type="checkbox"
             checked={preferences.showQuote}
             onChange={(e) => onChange({ showQuote: e.target.checked })}
           />
-          Afficher
+          Show
         </label>
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Tâches</legend>
+        <legend>Tasks</legend>
         <label>
           <input
             type="checkbox"
             checked={preferences.showCompletedTasks}
             onChange={(e) => onChange({ showCompletedTasks: e.target.checked })}
           />
-          Afficher les tâches terminées
+          Show completed tasks
         </label>
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Fond d'écran personnalisé</legend>
+        <legend>Custom background</legend>
         <input
           ref={fileInputRef}
           type="file"
@@ -213,9 +213,9 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
           onClick={() => fileInputRef.current?.click()}
           disabled={customLoading}
         >
-          {customLoading ? 'Chargement...' : 'Choisir une photo'}
+          {customLoading ? 'Loading...' : 'Choose a photo'}
         </button>
-        <span className="claritab-settings-size-hint">Max. 8 Mo</span>
+        <span className="claritab-settings-size-hint">Max. 8 MB</span>
         {(customError) && (
           <p className="claritab-settings-background-error" role="alert">
             {customError}
@@ -230,12 +230,12 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
 
       <div className="claritab-settings-actions">
         <button type="button" className="claritab-settings-reset" onClick={onReset}>
-          Réinitialiser les données
+          Reset data
         </button>
       </div>
 
       <p className="claritab-settings-note">
-        Les données restent sur l\'appareil. Aucune information n\'est envoyée à un serveur.
+        Your data stays on this device. No information is sent to a server.
       </p>
     </div>
   )

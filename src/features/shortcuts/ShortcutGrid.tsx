@@ -102,7 +102,7 @@ function SortableShortcut({
             event.stopPropagation()
             onEdit(shortcut.id)
           }}
-          aria-label={`Modifier le raccourci ${shortcut.label}`}
+          aria-label={`Edit shortcut ${shortcut.label}`}
         >
           <span className="claritab-shortcut-edit-icon" aria-hidden="true">✎</span>
         </button>
@@ -151,10 +151,10 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
         event: React.MouseEvent<HTMLButtonElement>,
       ) => {
         /*
-         * Une fois le drag activé, le click généré au relâchement peut être
-         * envoyé au raccourci déplacé ou à celui qui se trouve sous le pointeur.
-         * Comme aucun raccourci n'est désormais un lien natif, il suffit de
-         * consommer cette activation sans naviguer.
+         * Once dragging is active, the click generated on release may be sent
+         * to the moved shortcut or to the shortcut currently under the pointer.
+         * Because shortcuts are no longer native links, this activation can simply
+         * be consumed without navigating.
          */
         if (suppressShortcutNavigationRef.current) {
           event.preventDefault()
@@ -325,12 +325,12 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
         const trimmedUrl = url.trim()
 
         if (!trimmedLabel || !trimmedUrl) {
-          setError('Le libellé et l\'URL sont requis.')
+          setError('The label and URL are required.')
           return
         }
 
         if (isDangerousUrl(trimmedUrl)) {
-          setError('Protocole dangereux interdit.')
+          setError('Dangerous URL protocols are not allowed.')
           return
         }
 
@@ -339,7 +339,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
         try {
           normalized = normalizeUrl(trimmedUrl)
         } catch {
-          setError('URL invalide.')
+          setError('Invalid URL.')
           return
         }
 
@@ -384,9 +384,9 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
 
     const handleGridPointerDownCapture = useCallback(() => {
       /*
-       * Le click résiduel d'un drag n'est pas précédé d'un nouveau pointerdown.
-       * Un nouveau pointerdown après la fin du drag indique donc une nouvelle
-       * interaction volontaire : on peut réautoriser la navigation avant son click.
+       * The residual click after a drag is not preceded by a new pointerdown.
+       * A new pointerdown after the drag ends therefore indicates a new
+       * intentional interaction, so navigation can be enabled again before its click.
        */
       if (
         suppressShortcutNavigationRef.current &&
@@ -460,12 +460,12 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                     type="button"
                     className="claritab-shortcut-add"
                     onClick={openAdd}
-                    aria-label="Ajouter un raccourci"
+                    aria-label="Add shortcut"
                   >
                     <span className="claritab-shortcut-add-icon" aria-hidden="true">+</span>
                   </button>
                 </div>
-                <span className="claritab-shortcut-add-label">Ajouter</span>
+                <span className="claritab-shortcut-add-label">Add</span>
               </div>
             </div>
           </SortableContext>
@@ -478,7 +478,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
               className="claritab-modal-overlay"
               role="dialog"
               aria-modal="true"
-              aria-label={editId ? 'Modifier le raccourci' : 'Ajouter un raccourci'}
+              aria-label={editId ? 'Edit shortcut' : 'Add shortcut'}
               onClick={handleOverlayClick}
             >
               <div className="claritab-modal" ref={modalRef}>
@@ -486,18 +486,18 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                   type="button"
                   className="claritab-modal-close"
                   onClick={close}
-                  aria-label="Fermer"
+                  aria-label="Close"
                 >
                   ×
                 </button>
 
                 <h3 className="claritab-modal-title">
-                  {editId ? 'Modifier le raccourci' : 'Ajouter un raccourci'}
+                  {editId ? 'Edit shortcut' : 'Add shortcut'}
                 </h3>
 
                 <form onSubmit={handleSave}>
                   <div className="claritab-modal-field">
-                    <label htmlFor="shortcut-label">Nom</label>
+                    <label htmlFor="shortcut-label">Name</label>
                     <input
                       id="shortcut-label"
                       type="text"
@@ -509,7 +509,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                       onInput={() => {
                         if (error) setError(null)
                       }}
-                      placeholder="Nom du raccourci"
+                      placeholder="Shortcut name"
                       maxLength={32}
                       aria-describedby={error ? 'shortcut-modal-error' : undefined}
                       aria-invalid={!!error}
@@ -529,7 +529,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                       onInput={() => {
                         if (error) setError(null)
                       }}
-                      placeholder="https://exemple.com"
+                      placeholder="https://example.com"
                       aria-describedby={error ? 'shortcut-modal-error' : undefined}
                       aria-invalid={!!error}
                     />
@@ -550,7 +550,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                         }`}
                         onClick={handleModalDelete}
                       >
-                        {confirmDelete ? 'Confirmer la suppression' : 'Supprimer cet élément'}
+                        {confirmDelete ? 'Confirm deletion' : 'Delete shortcut'}
                       </button>
                     )}
 
@@ -559,7 +559,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                       className="claritab-modal-cancel"
                       onClick={close}
                     >
-                      Annuler
+                      Cancel
                     </button>
 
                     <button
@@ -567,7 +567,7 @@ export const ShortcutGrid = forwardRef<ShortcutGridHandle, Props>(
                       className="claritab-modal-save"
                       disabled={isSaveDisabled}
                     >
-                      Enregistrer
+                      Save
                     </button>
                   </div>
                 </form>
