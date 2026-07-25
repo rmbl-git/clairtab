@@ -17,33 +17,33 @@ import { ShortcutGrid } from '../features/shortcuts/ShortcutGrid'
 import { AmbientHeader } from '../features/ambient/AmbientHeader'
 import { ModeSwitcher } from '../features/modeswitcher/ModeSwitcher'
 import { useBackground } from '../features/background/use-background'
+import { readCustomBackground, writeCustomBackground } from '../features/background/custom-background'
 import '../styles/shell.css'
 
 export default function App() {
   const [state, setState] = useState<AppState | null>(null)
   const [loaded, setLoaded] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [customBackgroundUrl, setCustomBackgroundUrl] = useState<string | null>(null)
 
   const defaultPreferences: Preferences = {
     primaryMode: 'focus',
-    theme: 'landscapes',
     showQuote: true,
     veilIntensity: 'medium',
-    reduceMotion: false,
     showCompletedTasks: true,
     showSearchModule: true,
     showFocusModule: true,
-    localBackgroundsOnly: false,
   }
 
   const preferences = state?.preferences ?? defaultPreferences
-  const bg = useBackground(preferences)
+  const bg = useBackground()
 
   useEffect(() => {
     loadState().then((s) => {
       setState(s)
       setLoaded(true)
     })
+    readCustomBackground().then(setCustomBackgroundUrl)
   }, [])
 
   const updatePreferences = useCallback((Prefs: Partial<Preferences>) => {
@@ -193,6 +193,15 @@ export default function App() {
     saveState(createDefaultState())
   }, [])
 
+  const handleSetCustomBackground = useCallback(async (dataUrl: string) => {
+    setCustomBackgroundUrl(dataUrl)
+    try {
+      await writeCustomBackground(dataUrl)
+    } catch {
+      // storage write failed, keep optimistic UI
+    }
+  }, [])
+
   const handleSearchSubmit = useCallback((query: string) => {
     const trimmed = query.trim()
     if (!trimmed) return 'Search query cannot be empty.'
@@ -217,7 +226,7 @@ export default function App() {
   }
 
   const { tasks, shortcuts } = state
-  const bgImageUrl = bg.cache?.imageUrl ?? ''
+  const bgImageUrl = customBackgroundUrl ?? (bg.cache?.imageUrl ?? '')
   const bgColor = bg.cache?.color ?? '#1a2a3a'
   const bgOverlay =
     preferences.veilIntensity === 'light'
@@ -268,7 +277,7 @@ export default function App() {
 
   return (
     <div
-      className={`claritab-shell${preferences.reduceMotion === true ? ' claritab-reduced-motion' : ''}`}
+      className="claritab-shell"
       style={{ '--bg-image': `url(${bgImageUrl})`, '--bg-color': bgColor, '--bg-overlay': bgOverlay } as React.CSSProperties}
     >
       <div className="claritab-background" aria-hidden="true" />
@@ -287,10 +296,7 @@ export default function App() {
             onChange={updatePreferences}
             onReset={resetData}
             onClose={() => setSettingsOpen(false)}
-            backgroundLoading={bg.loading}
-            backgroundError={bg.error}
-            onRefreshBackground={() => bg.refresh(true)}
-            attribution={bg.attribution}
+            onChooseCustomBackground={handleSetCustomBackground}
           />
         )}
         <div className="claritab-content">
@@ -307,18 +313,6 @@ export default function App() {
         </div>
         <footer className="claritab-footer">
           <p>{brand.name}</p>
-          {bg.attribution && (
-            <p className="claritab-attribution">
-              Photo par{' '}
-              <a href={bg.attribution.photographerUrl} target="_blank" rel="noopener noreferrer">
-                {bg.attribution.photographer}
-              </a>{' '}
-              sur{' '}
-              <a href={bg.attribution.providerUrl} target="_blank" rel="noopener noreferrer">
-                {bg.attribution.provider}
-              </a>
-            </p>
-          )}
         </footer>
       </main>
     </div>

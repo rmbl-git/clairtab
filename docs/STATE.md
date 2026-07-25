@@ -39,6 +39,7 @@ Obtenir une extension Manifest V3 minimale, chargeable en mode unpacked, afficha
   - Modale de raccourci (ajout/Ã©dition, validation, focus trap)
   - Fallback SVG local pour chaque thÃ¨me (V1)
   - Composants accessibles (clavier, focus visible, responsive)
+- Fond d'écran personnalisé local (sélection, optimisation WebP, stockage chrome.storage.local, restauration du fond par défaut)
 
 ## Ce qui est partiellement implÃ©mentÃ©
 

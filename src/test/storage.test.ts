@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { loadState, saveState, createDefaultState, mergeWithDefaults } from '../storage/storage'
-import type { AppState, Preferences, ThemeId, Task } from '../domain/types'
+import type { AppState, Preferences, Task } from '../domain/types'
 import {
   validateTaskTitle,
   validateShortcutLabel,
@@ -103,11 +103,9 @@ describe('storage - hydration without overwrite', () => {
 
   it('does not overwrite stored preferences with defaults', () => {
     const stored = createDefaultState()
-    stored.preferences.theme = 'minimal' as ThemeId
     stored.preferences.primaryMode = 'search'
     stored.preferences.showSearchModule = false
     const merged = mergeWithDefaults(stored)
-    expect(merged.preferences.theme).toBe('minimal')
     expect(merged.preferences.primaryMode).toBe('search')
     expect(merged.preferences.showSearchModule).toBe(false)
   })
@@ -193,14 +191,14 @@ describe('storage - persistence', () => {
       ...state,
       preferences: {
         ...state.preferences,
-        theme: 'architecture' as ThemeId,
-        reduceMotion: true,
+        primaryMode: 'search',
+        showQuote: false,
       },
     }
     await saveState(next)
     const loaded = await loadState()
-    expect(loaded.preferences.theme).toBe('architecture')
-    expect(loaded.preferences.reduceMotion).toBe(true)
+    expect(loaded.preferences.primaryMode).toBe('search')
+    expect(loaded.preferences.showQuote).toBe(false)
   })
 })
 
@@ -214,14 +212,11 @@ describe('module visibility', () => {
   it('allows disabling one module when the other is on', () => {
     const prefs: Preferences = {
       primaryMode: 'focus',
-      theme: 'landscapes',
       showQuote: true,
       veilIntensity: 'medium',
-      reduceMotion: false,
       showCompletedTasks: true,
       showSearchModule: true,
       showFocusModule: false,
-      localBackgroundsOnly: false,
     }
     expect(prefs.showSearchModule).toBe(true)
     expect(prefs.showFocusModule).toBe(false)
@@ -230,14 +225,11 @@ describe('module visibility', () => {
   it('enforces at least one module active in SettingsPanel', () => {
     const prefs: Preferences = {
       primaryMode: 'focus',
-      theme: 'landscapes',
       showQuote: true,
       veilIntensity: 'medium',
-      reduceMotion: false,
       showCompletedTasks: true,
       showSearchModule: true,
       showFocusModule: true,
-      localBackgroundsOnly: false,
     }
     expect(prefs.showSearchModule || prefs.showFocusModule).toBeTruthy()
   })

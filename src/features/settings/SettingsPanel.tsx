@@ -1,24 +1,63 @@
-import { useState } from 'react'
-import type { Preferences, ThemeId } from '../../domain/types'
+import { useState, useRef, useEffect } from 'react'
+import type { Preferences } from '../../domain/types'
+import { processImageFile } from '../background/custom-background'
 
 interface Props {
   preferences: Preferences
   onChange: (Prefs: Partial<Preferences>) => void
   onReset: () => void
   onClose: () => void
-  backgroundLoading?: boolean
-  backgroundError?: string | null
-  onRefreshBackground?: () => void
-  attribution?: {
-    photographer: string
-    photographerUrl: string
-    provider: string
-    providerUrl: string
-  } | null
+  onChooseCustomBackground?: (dataUrl: string) => void | Promise<void>
 }
 
-export function SettingsPanel({ preferences, onChange, onReset, onClose, backgroundLoading, backgroundError, onRefreshBackground, attribution }: Props) {
+export function SettingsPanel({ preferences, onChange, onReset, onClose, onChooseCustomBackground }: Props) {
   const [error, setError] = useState<string | null>(null)
+  const [customError, setCustomError] = useState<string | null>(null)
+  const [customSuccess, setCustomSuccess] = useState<string | null>(null)
+  const [customLoading, setCustomLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const successTimerRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) {
+        window.clearTimeout(successTimerRef.current)
+      }
+    }
+  }, [])
+
+  const showCustomSuccess = (message: string) => {
+    if (successTimerRef.current) {
+      window.clearTimeout(successTimerRef.current)
+    }
+    setCustomSuccess(message)
+    setCustomError(null)
+    successTimerRef.current = window.setTimeout(() => {
+      setCustomSuccess(null)
+    }, 2000)
+  }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setCustomLoading(true)
+    setCustomError(null)
+    setCustomSuccess(null)
+
+    try {
+      const dataUrl = await processImageFile(file)
+      await onChooseCustomBackground?.(dataUrl)
+      showCustomSuccess('Fond d\'écran mis à jour.')
+    } catch (err) {
+      setCustomError(err instanceof Error ? err.message : 'Erreur lors du traitement de l\'image.')
+    } finally {
+      setCustomLoading(false)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
 
   const handleDisableBothModules = () => {
     setError("Au moins un module doit rester activé.")
@@ -41,8 +80,6 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, backgro
     setError(null)
     onChange({ showFocusModule: checked })
   }
-
-  const effectiveReduceMotion = preferences.reduceMotion === true
 
   return (
     <div className="claritab-settings" role="dialog" aria-label="Réglages">
@@ -105,20 +142,6 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, backgro
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Thème</legend>
-        <select
-          value={preferences.theme}
-          onChange={(e) => onChange({ theme: e.target.value as ThemeId })}
-          aria-label="Thème du fond"
-        >
-          <option value="landscapes">Landscapes</option>
-          <option value="architecture">Architecture</option>
-          <option value="minimal">Minimal</option>
-          <option value="nature">Nature</option>
-        </select>
-      </fieldset>
-
-      <fieldset className="claritab-settings-group">
         <legend>Voile</legend>
         <label>
           <input
@@ -162,18 +185,6 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, backgro
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Animations</legend>
-        <label>
-          <input
-            type="checkbox"
-            checked={effectiveReduceMotion}
-            onChange={(e) => onChange({ reduceMotion: e.target.checked })}
-          />
-          Réduire les mouvements
-        </label>
-      </fieldset>
-
-      <fieldset className="claritab-settings-group">
         <legend>Tâches</legend>
         <label>
           <input
@@ -186,40 +197,33 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, backgro
       </fieldset>
 
       <fieldset className="claritab-settings-group">
-        <legend>Fond</legend>
-        <label>
-          <input
-            type="checkbox"
-            checked={preferences.localBackgroundsOnly}
-            onChange={(e) => onChange({ localBackgroundsOnly: e.target.checked })}
-          />
-          Fonds locaux uniquement
-        </label>
-        {onRefreshBackground && (
-          <button
-            type="button"
-            className="claritab-settings-refresh"
-            onClick={onRefreshBackground}
-            disabled={backgroundLoading}
-          >
-            {backgroundLoading ? 'Chargement...' : 'Changer l\'image'}
-          </button>
-        )}
-        {backgroundError && (
+        <legend>Fond d'écran personnalisé</legend>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+        <button
+          type="button"
+          className="claritab-settings-refresh"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={customLoading}
+        >
+          {customLoading ? 'Chargement...' : 'Choisir une photo'}
+        </button>
+        <span className="claritab-settings-size-hint">Max. 8 Mo</span>
+        {(customError) && (
           <p className="claritab-settings-background-error" role="alert">
-            {backgroundError}
+            {customError}
           </p>
         )}
-        {attribution && (
-          <p className="claritab-settings-attribution">
-            Photo par{' '}
-            <a href={attribution.photographerUrl} target="_blank" rel="noopener noreferrer">
-              {attribution.photographer}
-            </a>{' '}
-            sur{' '}
-            <a href={attribution.providerUrl} target="_blank" rel="noopener noreferrer">
-              {attribution.provider}
-            </a>
+        {customSuccess && (
+          <p className="claritab-settings-success" role="status">
+            {customSuccess}
           </p>
         )}
       </fieldset>

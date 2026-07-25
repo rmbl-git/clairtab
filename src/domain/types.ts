@@ -2,14 +2,11 @@ export type ThemeId = 'landscapes' | 'architecture' | 'minimal' | 'nature'
 
 export interface Preferences {
   primaryMode: 'focus' | 'search'
-  theme: ThemeId
   showQuote: boolean
   veilIntensity: 'light' | 'medium' | 'strong'
-  reduceMotion: boolean | 'system'
   showCompletedTasks: boolean
   showSearchModule: boolean
   showFocusModule: boolean
-  localBackgroundsOnly: boolean
 }
 
 export interface Task {
