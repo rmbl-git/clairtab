@@ -119,7 +119,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group">
+      <fieldset className="claritab-settings-group claritab-settings-separator">
         <legend>Default mode</legend>
         <label>
           <input
@@ -141,7 +141,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group">
+      <fieldset className="claritab-settings-group claritab-settings-separator">
         <legend>Background overlay</legend>
         <label>
           <input
@@ -172,7 +172,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group">
+      <fieldset className="claritab-settings-group claritab-settings-separator">
         <legend>Quote</legend>
         <label>
           <input
@@ -184,7 +184,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group">
+      <fieldset className="claritab-settings-group claritab-settings-separator">
         <legend>Tasks</legend>
         <label>
           <input
@@ -196,7 +196,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
         </label>
       </fieldset>
 
-      <fieldset className="claritab-settings-group">
+      <fieldset className="claritab-settings-group claritab-settings-separator">
         <legend>Custom background</legend>
         <input
           ref={fileInputRef}

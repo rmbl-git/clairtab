@@ -22,7 +22,7 @@ export function ModeSwitcher({ activeMode, onSwitch }: Props) {
         onClick={() => onSwitch('search')}
         type="button"
       >
-        eecherche
+        Search
       </button>
     </div>
   )
