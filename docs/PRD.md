@@ -144,8 +144,8 @@ Aucune télémétrie n’est requise pour le MVP.
 
 - **Intention :** commencer une action.
 - **Action :** ouvrir un nouvel onglet Chrome.
-- **Réponse du produit :** afficher le shell local et les données persistées.
-- **État visible :** fond local ou couleur de base, module principal, raccourcis.
+- **Réponse du produit :** afficher le shell local avec les modules visibles selon les réglages, les données persistées et le fond local.
+- **État visible :** fond local par thème, module principal (Recherche ou To-do ou les deux avec onglets), raccourcis.
 - **Donnée affectée :** aucune.
 - **Erreur possible :** stockage illisible.
 - **Récupération :** valeurs par défaut et message non bloquant ; conserver une trace technique sans contenu utilisateur.
@@ -285,7 +285,7 @@ Aucune télémétrie n’est requise pour le MVP.
 - **FR-052** Le chargement distant ne doit pas bloquer les tâches, la recherche ou les raccourcis.
 - **FR-053** La dernière photo valide doit être conservée en cache.
 - **FR-054** Un fallback local doit exister pour chaque thème ou pour l’application entière.
-- **FR-055** Une photo Unsplash doit afficher le photographe et un lien d’attribution conforme.
+- **FR-055** Une photo Pixabay doit afficher le photographe et un lien d’attribution conforme.
 - **FR-056** Les URLs d’image doivent provenir de la réponse normalisée du proxy.
 - **FR-057** Une réponse distante invalide doit être rejetée.
 - **FR-058** Une action manuelle « Changer le fond » doit être limitée pour éviter les appels abusifs.
@@ -371,6 +371,8 @@ onboardingCompleted: boolean
 primaryMode: "focus" | "search"
 theme: "landscapes" | "architecture" | "minimal" | "nature"
 reduceMotion: boolean | "system"
+showSearchModule: boolean
+showFocusModule: boolean
 ```
 
 ### `Task`
@@ -405,7 +407,7 @@ color: CSS color
 alt: string
 photographerName: string
 photographerUrl: HTTPS URL
-providerName: "Unsplash"
+providerName: "Pixabay"
 providerUrl: HTTPS URL
 fetchedAt: ISO datetime
 expiresAt: ISO datetime
@@ -445,7 +447,7 @@ Sortie normalisée :
 ```json
 {
   "photoId": "string",
-  "imageUrl": "https://images.unsplash.com/...",
+  "imageUrl": "https://cdn.pixabay.com/...",
   "width": 2400,
   "height": 1600,
   "color": "#6b7280",
@@ -532,7 +534,7 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 
 ### Fiabilité
 
-- Fallback local.
+- Fallback local. Les quatre thèmes utilisent des fichiers SVG embarqués localement comme fallback de la V1. Ils ne sont pas les images principales finales — la tâche 003 ajoutera les photographies distantes. Si le fournisseur distant échoue, le fallback SVG ou gradient réapparaît.
 - Écriture de stockage encapsulée avec rollback.
 - Migrations versionnées.
 - Tests déterministes.
@@ -567,7 +569,7 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 - Les quatre thèmes proposés sont-ils suffisants ?
 - Le produit doit-il autoriser les URLs `http:` hors localhost ?
 - Une politique de confidentialité publique est-elle déjà hébergée ?
-- Le compte Unsplash et l’accès production sont-ils disponibles ?
+- Le compte Pixabay et l’accès production sont-ils disponibles ?
 
 ## 24. Évolutions possibles
 
@@ -582,3 +584,4 @@ La référence détaillée se trouve dans `docs/UI-DIRECTION.md` et `docs/assets
 - thèmes additionnels ;
 - raccourcis clavier ;
 - widgets additionnels seulement s’ils restent compatibles avec l’objectif unique.
+

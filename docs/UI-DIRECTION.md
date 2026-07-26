@@ -191,7 +191,7 @@ Les réglages ne sont pas affichés en permanence.
 - Toujours présente pour une photo distante.
 - Petite pastille sombre translucide.
 - 11 à 12 px.
-- Exemple : `Photo par Nom sur Unsplash`.
+- Exemple : `Photo par Nom sur Pixabay`.
 - Liens accessibles et focus visible.
 - Ne pas masquer l'attribution derrière une interaction de survol seulement.
 
@@ -284,3 +284,4 @@ La photo fournit la couleur dominante. L'interface doit rester neutre.
 ## Portée
 
 Cette direction visuelle guide le MVP. Elle ne demande pas la création d'un design system complet. Toute divergence importante doit être documentée dans un work record ou une décision.
+

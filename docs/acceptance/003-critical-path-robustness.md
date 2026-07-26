@@ -3,6 +3,23 @@
 Feature: Robustesse et fond distant  
 Primary user or system: utilisateur de ClairTab et système d’intégration
 
+## Statuts
+
+| Scénario | Statut |
+|----------|--------|
+| AC-1 Shell disponible avant le réseau | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-2 Photo distante conforme | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-3 Clé absente du client | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-4 Fallback hors ligne | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-5 Conserver le dernier fond valide | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-6 Ignorer une réponse obsolète | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-7 Réponse invalide rejetée | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-8 Échec de stockage récupérable | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-9 Permissions limitées | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-10 Aucun contenu utilisateur dans les logs | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-11 Accessibilité du parcours critique | ✅ Implémenté — Non vérifié dans Chrome |
+| AC-12 Limitation des refreshs | ✅ Implémenté — Non vérifié dans Chrome |
+
 ## Scenarios
 
 ### AC-1 — Shell disponible avant le réseau
@@ -21,7 +38,7 @@ THEN une photo est affichée avec un crédit photographe et un lien fournisseur 
 
 GIVEN le build de production.  
 WHEN les fichiers sont inspectés.  
-THEN aucune clé Unsplash ou secret équivalent n’est présent.
+THEN aucune clé Pixabay ou secret équivalent n’est présent.
 
 ### AC-4 — Fallback hors ligne
 

@@ -53,6 +53,7 @@ THEN aucune erreur inattendue n’est présente.
 ## Non-Goals
 
 - Implémenter les fonctionnalités métier.
-- Connecter Unsplash.
+- Connecter Pixabay.
 - Publier l’extension.
 - Finaliser l’identité visuelle.
+

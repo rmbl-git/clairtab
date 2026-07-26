@@ -24,10 +24,10 @@ ClairTab est une extension Chrome Manifest V3 composée d’une page d’extensi
                                     └─────────┬────────┘
                                               │
                                               ▼
-                                       Unsplash API
-                                              │
-                                              ▼
-                                  images.unsplash.com
+                                        Pixabay API
+                                               │
+                                               ▼
+                                   images.pixabay.com
 ```
 
 Le shell, les tâches, la recherche et les raccourcis fonctionnent sans proxy. Le réseau enrichit uniquement le fond.
@@ -316,7 +316,7 @@ Objectif :
 ```text
 script-src 'self';
 object-src 'self';
-img-src 'self' data: https://images.unsplash.com;
+img-src .self. data: https://cdn.pixabay.com;
 connect-src 'self' https://<background-proxy-domain>;
 base-uri 'self';
 form-action https://www.google.com;
@@ -359,7 +359,7 @@ Le client valide :
 - dimensions positives ;
 - thème attendu.
 
-### Proxy vers Unsplash
+### Proxy vers Pixabay
 
 - clé dans un secret Worker ;
 - requête de recherche ou topic avec orientation landscape ;
@@ -591,7 +591,8 @@ Toute migration doit disposer d’un `down` conceptuel ou d’une copie de l’a
 - https://developer.chrome.com/docs/extensions/reference/manifest/content-security-policy
 - https://developer.chrome.com/docs/webstore/program-policies/quality-guidelines
 - https://developer.chrome.com/docs/webstore/program-policies/privacy
-- https://unsplash.com/documentation
-- https://help.unsplash.com/en/articles/2511245-unsplash-api-guidelines
+- https://pixabay.com/api/docs/
+- https://pixabay.com/service/guidelines/
 - https://www.lummi.ai/license
 - https://www.lummi.ai/terms
+
