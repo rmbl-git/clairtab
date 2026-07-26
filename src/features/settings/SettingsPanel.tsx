@@ -129,7 +129,7 @@ export function SettingsPanel({ preferences, onChange, onReset, onClose, onChoos
             checked={preferences.primaryMode === 'focus'}
             onChange={() => onChange({ primaryMode: 'focus' })}
           />
-          Focus
+          Tasks
         </label>
         <label>
           <input

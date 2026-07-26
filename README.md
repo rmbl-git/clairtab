@@ -1,6 +1,6 @@
 # ClairTab
 
-ClairTab is a calm, privacy-friendly Chrome new-tab extension designed to turn intent into action.
+ClairTab is a simple, privacy-friendly Chrome new-tab extension.
 
 It combines a lightweight task list, Google search, personal shortcuts, and a custom local background in a focused interface.
 
