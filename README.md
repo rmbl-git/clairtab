@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="assets/claritab-preview.png" alt="ClairTab preview" width="100%">
+</p>
+
 # ClairTab
 
 ClairTab is a simple, privacy-friendly Chrome new-tab extension.
@@ -6,7 +11,6 @@ It combines a lightweight task list, Google search, personal shortcuts, and a cu
 
 ## Features
 
-- Configurable **Focus** and **Search** modes
 - Local task list with active and completed tasks
 - Personal shortcuts that can be added, edited, deleted, and reordered
 - Custom background image uploaded from the device
@@ -29,44 +33,24 @@ ClairTab stores its user data locally on the device. The custom background is pr
 - React Testing Library
 - dnd-kit
 
-## Installation
+## Install ClairTab in Chrome
 
-```bash
-npm install
-```
+ClairTab is currently distributed as an unpacked Chrome extension.
 
-## Development
+### Install from the downloadable package
 
-```bash
-npm run dev
-```
+1. Download the latest ClairTab package from the GitHub **Releases** page.
+2. Extract the downloaded ZIP archive to a permanent folder on your computer.
+3. Open Chrome and go to `chrome://extensions`.
+4. Enable **Developer mode** in the upper-right corner.
+5. Select **Load unpacked**.
+6. Open the extracted ClairTab package and select its `dist/` folder.
+7. Open a new Chrome tab.
 
-The development server serves `newtab.html`.
+Chrome will now use ClairTab as the new-tab page.
 
-## Quality checks
-
-```bash
-npm run typecheck
-npm run lint
-npm run test
-npm run build
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-The production extension is generated in `dist/`.
-
-## Load the extension in Chrome
-
-1. Open `chrome://extensions`.
-2. Enable **Developer mode**.
-3. Select **Load unpacked**.
-4. Choose the `dist/` directory.
-5. Open a new tab.
+> Keep the extracted package on your computer after installation. 
+Chrome loads the extension directly from the selected `dist/` folder, so moving or deleting that folder will disable the extension.
 
 ## Project structure
 
