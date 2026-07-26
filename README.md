@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="assets/claritab-preview.png" alt="ClairTab preview" width="100%">
+  <img src="assets/clairtab-preview.png" alt="ClairTab preview" width="100%">
 </p>
 
 # ClairTab
